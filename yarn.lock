@@ -2059,9 +2059,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.0.0":
+"@types/react@*":
   version "18.0.28"
   resolved "http://10.8.90.199:9527/@types%2freact/-/react-18.0.28.tgz#accaeb8b86f4908057ad629a26635fe641480065"
+  integrity sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^18.0.28":
+  version "18.0.28"
+  resolved "https://registry.npmjs.org/@types/react/-/react-18.0.28.tgz#accaeb8b86f4908057ad629a26635fe641480065"
   integrity sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==
   dependencies:
     "@types/prop-types" "*"
@@ -3959,6 +3968,11 @@ es-to-primitive@^1.2.1:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
+
+esbuild-wasm@0.8.27:
+  version "0.8.27"
+  resolved "https://registry.npmjs.org/esbuild-wasm/-/esbuild-wasm-0.8.27.tgz#050582dc5b486d9ed5b7a2d13495fe0437d038a6"
+  integrity sha512-gwUPDOwWgyD7i9r7LQTpQCKl0dCy4vpKS90YB+LwNW9FBWejrGffL0DF6rwXkY4Sfx2xQ+pth9YFZ2HpNeYFFA==
 
 escalade@^3.1.1:
   version "3.1.1"
