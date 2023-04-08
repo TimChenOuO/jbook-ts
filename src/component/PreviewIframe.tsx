@@ -1,38 +1,28 @@
 import { useEffect, useRef } from 'react';
 
 import './previewIframe.scss';
+// import srcDocHTML from './srcDoc.html';
 interface PreviewIframeProps {
   code: string
+  error: string,
 }
 
-const html = `
-  <html>
-    <head>
-      <style>html { background-color: white; }</style>
-    </head>
-    <body>
-      <div id='root'></div>
-      <script>
-        window.addEventListener('message', (e) => {
-          try {
-            eval(e.data);
-          } catch (err) {
-            const root = document.querySelector('#root');
-            root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>'
-            throw err;
-          }
-        }, false);
-      </script>
-    </body>
-  </html>
-`;
-
-
-const PreviewIframe: React.FC<PreviewIframeProps> = ({ code }) => {
+const PreviewIframe: React.FC<PreviewIframeProps> = ({ code, error }) => {
+  const srcDocRef = useRef<any>('');
   const iframeRef = useRef<any>();
+
+  useEffect(() => {
+    const fetchHtml = async () => {
+      const response = await fetch('srcDoc.html');
+      const text = await response.text();
+      srcDocRef.current = text;
+    }
+    fetchHtml();
+  }, [])
   
   useEffect(() => {
-    iframeRef.current.srcdoc = html;
+    if (srcDocRef.current === '') return;
+    iframeRef.current.srcdoc = srcDocRef.current;
     setTimeout(() => {
       iframeRef.current.contentWindow.postMessage(code, '*');
     }, 50);
@@ -43,9 +33,10 @@ const PreviewIframe: React.FC<PreviewIframeProps> = ({ code }) => {
       <iframe
         title="ifm-code-preview"
         sandbox="allow-scripts"
-        srcDoc={html}
+        srcDoc={srcDocRef.current}
         ref={iframeRef}
       />
+      {error && <div className='preview-error'>{error}</div>}
     </div>
   )
 };

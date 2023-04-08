@@ -8,12 +8,14 @@ import Resizable from "./Resizable";
 
 const CodeCell = () => {
   const [code, setCode] = useState('');
+  const [error, setError] = useState('');
   const [input, setInput] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      const output = await bundler(input);
+      const { code: output, err } = await bundler(input);
       setCode(output);
+      setError(err);
     }, 1000);
     return () => {
       clearTimeout(timer);
@@ -29,7 +31,7 @@ const CodeCell = () => {
             onChange={(val) => setInput(val)}
           />
         </Resizable>
-        <PreviewIframe code={code} />
+        <PreviewIframe code={code} error={error} />
       </div>
     </Resizable>
   )
