@@ -1,12 +1,15 @@
 import { useEffect, useRef } from 'react';
 
+import './previewIframe.scss';
 interface PreviewIframeProps {
   code: string
 }
 
 const html = `
   <html>
-    <head></head>
+    <head>
+      <style>html { background-color: white; }</style>
+    </head>
     <body>
       <div id='root'></div>
       <script>
@@ -30,16 +33,20 @@ const PreviewIframe: React.FC<PreviewIframeProps> = ({ code }) => {
   
   useEffect(() => {
     iframeRef.current.srcdoc = html;
-    iframeRef.current.contentWindow.postMessage(code, '*');
+    setTimeout(() => {
+      iframeRef.current.contentWindow.postMessage(code, '*');
+    }, 50);
   }, [code]);
 
   return (
-    <iframe
-      title="ifm-code-preview"
-      sandbox="allow-scripts"
-      srcDoc={html}
-      ref={iframeRef}
-    />
+    <div className='preview-iframe'>
+      <iframe
+        title="ifm-code-preview"
+        sandbox="allow-scripts"
+        srcDoc={html}
+        ref={iframeRef}
+      />
+    </div>
   )
 };
 

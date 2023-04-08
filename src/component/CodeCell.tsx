@@ -1,29 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CodeEditor from "./CodeEditor";
 import PreviewIframe from "./PreviewIframe";
 
 import bundler from "../bundler";
+import Resizable from "./Resizable";
 
 const CodeCell = () => {
   const [code, setCode] = useState('');
   const [input, setInput] = useState('');
-  
-  const onClick = async () => {
-    const output = await bundler(input);
-    setCode(output);
-  }
 
-  return <div>
-    <CodeEditor
-      initValue="const a = 1;"
-      onChange={(val) => setInput(val)}
-    />
-    <div>
-      <button onClick={onClick}>Submit</button>
-    </div>
-    <PreviewIframe code={code} />
-  </div>
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const output = await bundler(input);
+      setCode(output);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [input])
+
+  return (
+    <Resizable direction="vertical">
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
+        <Resizable direction="horizontal">
+          <CodeEditor
+            initValue="const a = 1;"
+            onChange={(val) => setInput(val)}
+          />
+        </Resizable>
+        <PreviewIframe code={code} />
+      </div>
+    </Resizable>
+  )
 }
 
 export default CodeCell;
