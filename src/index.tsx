@@ -1,11 +1,14 @@
 import { createRoot } from 'react-dom/client';
+import TextEditor from './component/TextEditor';
+// import CodeCell from "./component/CodeCell";
 
-import CodeCell from "./component/CodeCell";
+import 'bulmaswatch/superhero/bulmaswatch.min.css';
 
 const App = () => {
 
   return <div>
-    <CodeCell />
+    {/* <CodeCell /> */}
+    <TextEditor />
   </div>
 }
 

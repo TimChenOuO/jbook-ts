@@ -5,7 +5,6 @@ import parser from 'prettier/parser-babel';
 import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
 
-import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import './codeEditor.scss';
 import './syntax.scss';
 
