@@ -42,7 +42,7 @@ const cellsReducer = produce((state: CellsState = initState, action: Action): Ce
       state.order[targetIdx] = id;
       break;
     }
-    case ActionType.INSERT_CELL_BEFORE: {
+    case ActionType.INSERT_CELL_AFTER: {
       const { id, type } = payload;
       const cell: Cell = {
         id: randomId(),
@@ -52,9 +52,9 @@ const cellsReducer = produce((state: CellsState = initState, action: Action): Ce
       state.data[cell.id] = cell;
       const startIdx = state.order.findIndex((item) => item === id);
       if (startIdx < 0) {
-        state.order.push(cell.id);
+        state.order.unshift(cell.id);
       } else {
-        state.order.splice(startIdx, 0, cell.id);
+        state.order.splice(startIdx + 1, 0, cell.id);
       }
       break;
     }
