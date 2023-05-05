@@ -1,34 +1,42 @@
 import { useEffect, useState } from "react";
 
+import bundler from "../bundler";
+import { Cell } from "../redux-state";
+import { useAction } from "../hooks/useAction";
+
 import CodeEditor from "./CodeEditor";
 import PreviewIframe from "./PreviewIframe";
-
-import bundler from "../bundler";
 import Resizable from "./Resizable";
 
-const CodeCell = () => {
+interface CodeCellProps {
+  cell: Cell
+}
+
+const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
+  const { content, id } = cell;
+
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
-  const [input, setInput] = useState('');
+  const { updateCell } = useAction();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      const { code: output, err } = await bundler(input);
+      const { code: output, err } = await bundler(content);
       setCode(output);
       setError(err);
     }, 1000);
     return () => {
       clearTimeout(timer);
     }
-  }, [input])
+  }, [content])
 
   return (
     <Resizable direction="vertical">
       <div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
         <Resizable direction="horizontal">
           <CodeEditor
-            initValue="const a = 1;"
-            onChange={(val) => setInput(val)}
+            initValue={content}
+            onChange={(val) => updateCell(id, val)}
           />
         </Resizable>
         <PreviewIframe code={code} error={error} />
