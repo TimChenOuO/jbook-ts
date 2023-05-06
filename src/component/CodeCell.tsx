@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-
-import bundler from "../bundler";
+import { useEffect } from "react";
 import { Cell } from "../redux-state";
 import { useAction } from "../hooks/useAction";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 import CodeEditor from "./CodeEditor";
 import PreviewIframe from "./PreviewIframe";
@@ -15,20 +14,17 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { content, id } = cell;
 
-  const [code, setCode] = useState('');
-  const [error, setError] = useState('');
-  const { updateCell } = useAction();
+  const { updateCell, createBundle } = useAction();
+  const bundle = useTypedSelector(({ bundles }) => bundles[id]);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      const { code: output, err } = await bundler(content);
-      setCode(output);
-      setError(err);
+      createBundle(id, content);
     }, 1000);
     return () => {
       clearTimeout(timer);
     }
-  }, [content])
+  }, [content, id, createBundle])
 
   return (
     <Resizable direction="vertical">
@@ -39,7 +35,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             onChange={(val) => updateCell(id, val)}
           />
         </Resizable>
-        <PreviewIframe code={code} error={error} />
+        {bundle && <PreviewIframe code={bundle.code} err={bundle.err} />}
       </div>
     </Resizable>
   )

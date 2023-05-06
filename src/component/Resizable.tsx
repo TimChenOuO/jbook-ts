@@ -10,7 +10,7 @@ interface ResizableProps {
 
 const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
   const [windowLength, setWindowLength] = useState({ innerWidth: window.innerWidth, innerHeight: window.innerHeight });
-  const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(window.innerWidth * 0.75);
 
   useEffect(() => {
     let timer: any;

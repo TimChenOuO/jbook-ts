@@ -4,10 +4,10 @@ import './previewIframe.scss';
 // import srcDocHTML from './srcDoc.html';
 interface PreviewIframeProps {
   code: string
-  error: string,
+  err: string,
 }
 
-const PreviewIframe: React.FC<PreviewIframeProps> = ({ code, error }) => {
+const PreviewIframe: React.FC<PreviewIframeProps> = ({ code, err }) => {
   const srcDocRef = useRef<any>('');
   const iframeRef = useRef<any>();
 
@@ -36,7 +36,7 @@ const PreviewIframe: React.FC<PreviewIframeProps> = ({ code, error }) => {
         srcDoc={srcDocRef.current}
         ref={iframeRef}
       />
-      {error && <div className='preview-error'>{error}</div>}
+      {err && <div className='preview-error'>{err}</div>}
     </div>
   )
 };
