@@ -1,31 +1,24 @@
 import { useEffect, useRef } from 'react';
 
+import { useTypedSelector } from '../hooks/useTypedSelector';
+
 import './previewIframe.scss';
-// import srcDocHTML from './srcDoc.html';
 interface PreviewIframeProps {
   code: string
   err: string,
 }
 
 const PreviewIframe: React.FC<PreviewIframeProps> = ({ code, err }) => {
-  const srcDocRef = useRef<any>('');
+  const srcDocHtml = useTypedSelector(({ srcDocHtml }) => srcDocHtml);
+  const srcDocRef = useRef<any>(srcDocHtml.srcDoc);
   const iframeRef = useRef<any>();
-
-  useEffect(() => {
-    const fetchHtml = async () => {
-      const response = await fetch('srcDoc.html');
-      const text = await response.text();
-      srcDocRef.current = text;
-    }
-    fetchHtml();
-  }, [])
   
   useEffect(() => {
-    if (srcDocRef.current === '') return;
     iframeRef.current.srcdoc = srcDocRef.current;
     setTimeout(() => {
       iframeRef.current.contentWindow.postMessage(code, '*');
     }, 50);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
 
   return (

@@ -8,6 +8,8 @@ import {
   BundleCompleteAction,
   Direction,
   Action,
+  SrcDocStartAction,
+  ScrDocDoneAction,
 } from '../actions';
 import { ActionType } from '../types';
 import { CellTypes } from '../cell';
@@ -71,3 +73,19 @@ export const createBundle =
     const res = await bundle(input);
     dispatch(bundleComplete(cellId, res));
   };
+
+const srcDocStart = (): SrcDocStartAction => ({
+  type: ActionType.SRCDOC_START,
+});
+
+const srcDocDone = (srcDoc: string): ScrDocDoneAction => ({
+  type: ActionType.SRCDOC_DONE,
+  payload: srcDoc,
+});
+
+export const fetchCodeHtml = (src: string) => async (dispatch: Dispatch<Action>) => {
+  dispatch(srcDocStart());
+  const res = await fetch(src);
+  const text = await res.text();
+  dispatch(srcDocDone(text));
+};

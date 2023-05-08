@@ -49,10 +49,22 @@ export interface BundleCompleteAction {
   };
 }
 
+export interface SrcDocStartAction {
+  type: ActionType.SRCDOC_START;
+  payload?: object;
+}
+
+export interface ScrDocDoneAction {
+  type: ActionType.SRCDOC_DONE;
+  payload: string;
+}
+
 export type Action =
   | MoveCellAction
   | DeleteCellAction
   | InsertCellAfterAction
   | UpdateCellAction
   | BundleStartAction
-  | BundleCompleteAction;
+  | BundleCompleteAction
+  | SrcDocStartAction
+  | ScrDocDoneAction;
