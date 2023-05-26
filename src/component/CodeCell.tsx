@@ -8,6 +8,9 @@ import PreviewIframe from "./PreviewIframe";
 import Resizable from "./Resizable";
 
 import './codeCell.scss';
+import useCumulativeCode from "../hooks/useCumulativeCode";
+
+
 
 interface CodeCellProps {
   cell: Cell
@@ -17,22 +20,25 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { content, id } = cell;
 
   const { updateCell, createBundle } = useAction();
-  const bundle = useTypedSelector(({ bundles }) => bundles[id]);
+  const bundle = useTypedSelector(({ bundles }) => bundles![id]);
   const srcDocLoading = useTypedSelector(({ srcDocHtml }) => srcDocHtml.loading);
+  const cumulativeCode = useCumulativeCode(id);
+
+  // console.log(cumulativeCode);
 
   useEffect(() => {
     if (!bundle) {
-      createBundle(id, content);
+      createBundle(id, cumulativeCode);
       return;
     }
     const timer = setTimeout(async () => {
-      createBundle(id, content);
+      createBundle(id, cumulativeCode);
     }, 1000);
     return () => {
       clearTimeout(timer);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [content, id, createBundle])
+  }, [cumulativeCode, id, createBundle])
 
   return (
     <Resizable direction="vertical">

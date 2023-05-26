@@ -21,6 +21,8 @@ const bundler = async (rawCode: string) => {
         global: 'window',
         // DEBUG: true,
       },
+      jsxFactory: '_React.createElement',
+      jsxFragment: '_React.Fragment',
     });
     return {
       code: res?.outputFiles[0]?.text,
